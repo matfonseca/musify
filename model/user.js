@@ -2,7 +2,7 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
+mongoose.set('useFindAndModify', false);
 var userSchema = Schema({
     name: String,
     surname: String,

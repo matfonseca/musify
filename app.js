@@ -14,6 +14,9 @@ app.use(bodyParser.json());
 
 //rutas bases
 app.use('/api',user_routes);
+app.get('/pruebas',function(req,res){
+    res.status(200).send({message: 'mensaje de prueba'});
+});
 
 
 module.exports = app;
