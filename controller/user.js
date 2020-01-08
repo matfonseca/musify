@@ -144,7 +144,7 @@ function uploadImage(req,res){
 
 function getImage(req,res){
     var imageFile = req.params.imageFile;
-    var pathFile = '../uploads/users/'+imageFile;
+    var pathFile = './uploads/users/'+imageFile;
     fs.exists(pathFile, function(exists){
         if(exists){
             res.sendFile(path.resolve(pathFile));
