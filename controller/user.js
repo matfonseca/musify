@@ -1,7 +1,7 @@
 'use strict'
 var bcrypt = require('bcrypt-nodejs');
 var User = require('../model/user');
-
+var jwt = require('../services/jwt')
 function pruebas(req, res){
     res.status(200).send({
         message: 'probando una accion del controlador de usuarios del api rest con node y mongo'
@@ -70,6 +70,9 @@ function loginUser(req,res){
                     if(check){
                         if(params.gethash){
                             //devolver un token jwt
+                            res.status(200).send({
+                                token: jwt.createToken(user)
+                            })
                         }else{
                             res.status(200).send({user});
                         }
