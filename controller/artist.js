@@ -15,7 +15,7 @@ function getArtist(req,res){
         if(err){
             res.status(500).send({message:"Error en la petision"});
         }else{
-            if(!artistId){
+            if(!artist){
                 res.status(404).send({message:"El artista no existe"});
             }else{
                 res.status(200).send({artist});
@@ -182,5 +182,5 @@ module.exports = {
     updateArtist,
     deleteArtist,
     uploadImage,
-    getImage
+    getImage,
 }
