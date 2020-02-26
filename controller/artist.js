@@ -89,10 +89,98 @@ function saveArtist(req,res){
 
     })
 }
+function deleteArtist(req,res){
+    var artistId = req.params.id;
+
+    Artist.findByIdAndRemove(artistId, (err, artistRemoved) => {
+        if(err){
+            return res.status(500).send({message:"Error al eliminar el artista"});
+        }else{
+            if(!artistRemoved){
+                return res.status(404).send({message:"El artista no ha sido eliminado"});
+            }else{
+                
+                Album.deleteMany({artistID: artistRemoved._id},(err,albumRemoved) =>{
+                    if(err){
+                        return res.status(500).send({message:"Error al eliminar el Album"});
+                    }else{
+                        if(!albumRemoved){
+                            return res.status(404).send({message:"El album no ha sido eliminado"});
+                        }else{
+                            
+                            Song.deleteMany({album: albumRemoved._id},(err,songRemoved) =>{
+                                if(err){
+                                    return res.status(500).send({message:"Error al eliminar el Song"});
+                                }else{
+                                    if(!songRemoved){
+                                        return res.status(404).send({message:"El Song no ha sido eliminado"});
+                                    }else{
+                                        return res.status(200).send({artist:artistRemoved});
+                                    }
+                                }
+                            });    
+                         }
+                    }   
+                } );
+            }
+        }
+    });
+}
+
+function uploadImage(req,res){
+    var artistID = req.params.id;
+    var file_name = "No subido...";
+
+    if(req.files){
+        var file_path = req.files.image.path;
+        var file_split = file_path.split('/');
+        var file_name = file_split[file_split.length - 1];
+        var file_ext = file_name.split('.')[1].toLowerCase();
+        
+        if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'gif'){
+
+            Artist.findByIdAndUpdate(artistID, {image:file_name}, (err,artistUpdated) => {
+                if(err){
+                    res.status(500).send({message:'Error al actualizar el artista'});
+                }else{
+                    if(!artistUpdated){
+                        res.status(404).send({message:'No se puedo actualizar el artista'});
+                    }else{
+                        res.status(200).send({artist:artistUpdated});
+                    }
+                }
+
+            });
+
+        }else{
+            res.status(200).send({message:'Extension del archivo invalida'});
+        }
+
+        console.log(file_path);
+        console.log(file_split[file_split.length - 1]);
+
+    }else{
+        res.status(200).send({message:'No ha subido ninguna imagen'});
+    }
+}
+function getImage(req,res){
+    var imageFile = req.params.imageFile;
+    var pathFile = './uploads/artists/'+imageFile;
+    fs.exists(pathFile, function(exists){
+        if(exists){
+            res.sendFile(path.resolve(pathFile));
+        }else{
+            res.status(200).send({message:'No existe la imagen...'})
+        }
+    });
+}
 
 module.exports = {
     getArtist,
     saveArtist,
     getArtists,
     updateArtist,
+    deleteArtist,
+    uploadImage,
+    getImage
 }
