@@ -6,7 +6,7 @@ var albumSchema = Schema({
     description: String,
     year: Number,
     image: String,
-    artistID: {type: Schema.ObjectId, ref:'Artist'}
+    artist: {type: Schema.ObjectId, ref:'Artist'}
 });
 
 module.exports = mongoose.model('Album',albumSchema);

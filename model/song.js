@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var songSchema = Schema({
     number: Number,
     name: String,
-    eduration: String,
+    duration: String,
     file: String,
     album: {type:Schema.ObjectId, ref:'Album'}
 });
