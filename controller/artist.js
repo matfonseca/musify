@@ -146,7 +146,7 @@ function uploadImage(req,res){
                     if(!artistUpdated){
                         res.status(404).send({message:'No se puedo actualizar el artista'});
                     }else{
-                        res.status(200).send({artist:artistUpdated});
+                        res.status(200).send({artist:artistUpdated, image:file_name});
                     }
                 }
 

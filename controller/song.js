@@ -125,7 +125,7 @@ function uploadFile(req,res){
                     if(!songUpdated){
                         res.status(404).send({message:'No se puedo actualizar la cancion'});
                     }else{
-                        res.status(200).send({song:songUpdated});
+                        res.status(200).send({song:songUpdated , file: file_name});
                     }
                 }
 
